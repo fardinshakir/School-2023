@@ -19,7 +19,7 @@ Servo Servo1;
 int SERVO = 16;
 
 // TURN AMOUNT (MS)
-int turn = 330;
+int turn = 350;
 
 // STOP DISTANCE (INCHES)
 int max_dist = 5;
@@ -27,14 +27,14 @@ int max_dist = 5;
 // MOTOR SPEED
 int mtr_speed = 150;
 int max_speed = 255;
-int offset = -10;
+int offset = 30;
 
 void STOP()
 {
  digitalWrite(rf,LOW);
  digitalWrite(rb,LOW);
  digitalWrite(lb,LOW);
- digitalWrite(lf,LOW);
+ digitalWrite(lf,LOW);  
 
 }
 
@@ -70,7 +70,7 @@ void TURNLEFT()
   analogWrite(5, max_speed);
   analogWrite(6, max_speed);
   LEFT();
-  delay(turn);
+  delay(turn+20);
   STOP();
   analogWrite(5, mtr_speed+offset);
   analogWrite(6, mtr_speed);
@@ -89,7 +89,7 @@ void TURNRIGHT()
   analogWrite(5, max_speed);
   analogWrite(6, max_speed);
   RIGHT();
-  delay(turn);
+  delay(turn+20);
   STOP();
   analogWrite(5, mtr_speed+offset);
   analogWrite(6, mtr_speed);
@@ -100,7 +100,7 @@ void AROUND()
   analogWrite(5, max_speed);
   analogWrite(6, max_speed);
   RIGHT();
-  delay(turn*1.7);
+  delay(turn*2);
   STOP();
   analogWrite(5, mtr_speed+offset);
   analogWrite(6, mtr_speed);
@@ -116,7 +116,7 @@ int CHECK()
   digitalWrite(TRIG, LOW);
   pulseIn(ECHO, LOW);
   delay(500);
-// SERVO RIGHT
+// SERVO RIGHT 
   Servo1.write(0);
   delay(500);
   int right = DISTANCE();
@@ -233,11 +233,12 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   analogWrite(5, mtr_speed+offset);
   analogWrite(6, mtr_speed);
+  Servo1.write(90);
 }
 
 void loop() {
   int distance = DISTANCE();
-// SENSE();
+
   if (distance > max_dist)
   {
     FORWARD();
@@ -245,7 +246,7 @@ void loop() {
   else
   {
     STOP();
-    digitalWrite(TRIG, LOW);
+    digitalWrite(TRIG, LOW); 
     pulseIn(ECHO, LOW);
     CHECK();
   }
